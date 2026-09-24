@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sridevi Designer</title>
+<meta name="description" content="Handcrafted maggam and aari work blouses, sarees and lehengas, made to order.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Marcellus&family=Mulish:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --ivory: #FBF6EE;
+    --ivory-2: #F4EBDD;
+    --card: #FFFDF9;
+    --ink: #2B1A1E;
+    --muted: #7A6468;
+    --line: #E6D6BF;
+    --wine: #5C0F24;
+    --wine-deep: #3E0916;
+    --gold: #B8893A;
+    --gold-light: #E2C07A;
+    --on-wine: #F7EBD9;
+    --f-display: "Marcellus", "Trajan Pro", Georgia, serif;
+    --f-italic: "Cormorant Garamond", Georgia, serif;
+    --f-body: "Mulish", "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --ivory: #150A0D; --ivory-2: #1E0F13; --card: #211216; --ink: #F3E8DC; --muted: #BFA9A6;
+      --line: #3D2A22; --gold: #D9B36A;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --ivory: #150A0D; --ivory-2: #1E0F13; --card: #211216; --ink: #F3E8DC; --muted: #BFA9A6;
+    --line: #3D2A22; --gold: #D9B36A;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--ivory); color: var(--ink); font: 400 16px/1.65 var(--f-body); -webkit-font-smoothing: antialiased; }
+  canvas { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+  .wrap { max-width: 1240px; margin-inline: auto; padding-inline: 20px; }
+  h1, h2, h3 { font-family: var(--f-display); font-weight: 400; margin: 0; line-height: 1.15; text-wrap: balance; }
+  .script { font-family: var(--f-italic); font-style: italic; }
+
+  /* Gold ornament divider: ——— ✦ ——— */
+  .ornament { display: flex; align-items: center; justify-content: center; gap: 14px; color: var(--gold); margin: 14px auto 0; }
+  .ornament::before, .ornament::after { content: ""; width: 64px; height: 1px; background: currentColor; }
+  .ornament span { font-size: 12px; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    min-height: 50px; padding: 0 30px; border: 1px solid transparent; cursor: pointer;
+    font: 700 13px/1 var(--f-body); letter-spacing: .16em; text-transform: uppercase;
+    transition: background .25s ease, color .25s ease, border-color .25s ease;
+  }
+  .btn-gold { background: var(--gold-light); color: var(--wine-deep); }
+  .btn-gold:hover { background: #F0D598; }
+  .btn-line { border-color: var(--gold-light); color: var(--on-wine); background: transparent; }
+  .btn-line:hover { background: var(--gold-light); color: var(--wine-deep); }
+  .btn-wine { background: var(--wine); color: var(--on-wine); }
+  .btn-wine:hover { background: var(--wine-deep); }
+  .btn svg { width: 18px; height: 18px; }
+
+  /* Top bar */
+  .topbar { background: var(--wine-deep); color: var(--gold-light); font-size: 12.5px; letter-spacing: .08em; text-align: center; padding: 8px 16px; }
+
+  /* Header */
+  .header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--ivory); border-bottom: 1px solid var(--line); }
+  .header .row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding-block: 18px 10px; }
+  .logo { grid-column: 2; text-align: center; }
+  .logo b { display: block; font: 400 clamp(22px, 3.2vw, 32px)/1 var(--f-display); letter-spacing: .22em; color: var(--wine); padding-left: .22em; }
+  .logo small { display: block; margin-top: 6px; font: italic 500 16px/1 var(--f-italic); color: var(--gold); letter-spacing: .04em; }
+  :root[data-theme="dark"] .logo b { color: var(--gold-light); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .logo b { color: var(--gold-light); } }
+  .bag-btn { justify-self: end; position: relative; display: inline-flex; align-items: center; gap: 8px; background: none; border: 0; color: var(--ink); cursor: pointer; font: 600 12px/1 var(--f-body); letter-spacing: .14em; text-transform: uppercase; padding: 8px 0; }
+  .bag-btn svg { width: 22px; height: 22px; }
+  .bag-btn output { min-width: 20px; height: 20px; border-radius: 50%; background: var(--wine); color: var(--on-wine); font: 700 11px/20px var(--f-body); text-align: center; letter-spacing: 0; }
+  .nav { display: flex; justify-content: center; gap: clamp(18px, 4vw, 44px); padding-bottom: 14px; }
+  .nav a { font-size: 12.5px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); padding-block: 4px; border-bottom: 1px solid transparent; }
+  .nav a:hover { color: var(--ink); border-color: var(--gold); }
+  @media (max-width: 640px) { .bag-btn span { display: none; } .nav { gap: 16px; } .nav a { font-size: 11px; letter-spacing: .12em; } }
+
+  /* Hero */
+  .hero {
+    background:
+      radial-gradient(circle at 20% 30%, rgba(226, 192, 122, .08), transparent 45%),
+      radial-gradient(rgba(226, 192, 122, .11) 1px, transparent 1.4px) 0 0 / 22px 22px,
+      var(--wine);
+    color: var(--on-wine);
+    padding: clamp(18px, 3vw, 28px);
+  }
+  .hero-frame { border: 1px solid rgba(226, 192, 122, .55); outline: 1px solid rgba(226, 192, 122, .25); outline-offset: -8px; }
+  .hero .inner { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(28px, 5vw, 64px); align-items: center; padding: clamp(36px, 6vw, 72px) clamp(20px, 5vw, 64px); max-width: 1240px; margin-inline: auto; }
+  .kicker { font-size: 12px; font-weight: 700; letter-spacing: .26em; text-transform: uppercase; color: var(--gold-light); margin: 0; }
+  .hero h1 { font-size: clamp(2.5rem, 5.6vw, 4.4rem); margin-block: 16px 14px; color: #FFF6E8; }
+  .hero .script { font-size: clamp(1.3rem, 2.4vw, 1.7rem); color: var(--gold-light); margin: 0 0 32px; }
+  .hero .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+  .arch { position: relative; border-radius: 999px 999px 0 0; overflow: hidden; }
+  .hero .arch { max-width: 420px; width: 100%; margin-inline: auto; aspect-ratio: 4 / 5; border: 1px solid var(--gold-light); padding: 10px; }
+  .hero .arch canvas { width: 100%; height: 100%; border-radius: 999px 999px 0 0; }
+  @media (max-width: 860px) {
+    .hero .inner { grid-template-columns: 1fr; text-align: center; }
+    .hero .ctas { justify-content: center; }
+    .hero .arch { max-width: 320px; }
+  }
+
+  /* Sections */
+  section { padding-block: clamp(64px, 9vw, 104px); }
+  .title { text-align: center; margin-bottom: 44px; }
+  .title .kicker { color: var(--gold); }
+  .title h2 { font-size: clamp(2rem, 4vw, 2.8rem); margin-top: 10px; }
+
+  /* Categories */
+  .cats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .cat { background: none; border: 0; padding: 0; color: inherit; cursor: pointer; text-align: center; font: inherit; }
+  .cat .arch { border: 1px solid var(--gold); padding: 7px; }
+  .cat canvas { width: 100%; aspect-ratio: 3 / 4; border-radius: 999px 999px 0 0; transition: transform .6s ease; }
+  .cat:hover canvas { transform: scale(1.04); }
+  .cat h3 { font-size: 1.25rem; margin-top: 16px; }
+  .cat small { color: var(--gold); font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+  @media (max-width: 820px) { .cats { grid-template-columns: repeat(2, 1fr); } }
+
+  /* Collection */
+  .collection { background: var(--ivory-2); }
+  .tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: -16px 0 40px; }
+  .tab { background: none; border: 1px solid var(--line); color: var(--muted); padding: 10px 20px; cursor: pointer; font: 600 12px/1 var(--f-body); letter-spacing: .14em; text-transform: uppercase; }
+  .tab[aria-pressed="true"] { background: var(--wine); border-color: var(--wine); color: var(--on-wine); }
+  .products { display: grid; grid-template-columns: repeat(4, 1fr); gap: 36px 22px; }
+  @media (max-width: 1000px) { .products { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 700px) { .products { grid-template-columns: repeat(2, 1fr); gap: 28px 14px; } }
+  .product { display: flex; flex-direction: column; text-align: center; min-width: 0; }
+  .pimg { position: relative; background: var(--card); padding: 8px; border: 1px solid var(--line); }
+  .pimg::after { content: ""; position: absolute; inset: 14px; border: 1px solid rgba(226, 192, 122, .6); pointer-events: none; }
+  .pimg canvas { width: 100%; aspect-ratio: 3 / 4; }
+  .ptag { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1; background: var(--wine); color: var(--on-wine); font-size: 10.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; padding: 5px 12px; white-space: nowrap; }
+  .product h3 { font-size: 1.1rem; margin-top: 16px; }
+  .price { color: var(--gold); font-weight: 700; margin: 4px 0 14px; font-variant-numeric: tabular-nums; }
+  .add { margin-top: auto; background: transparent; border: 1px solid var(--ink); color: var(--ink); cursor: pointer; padding: 12px 10px; font: 700 11.5px/1 var(--f-body); letter-spacing: .16em; text-transform: uppercase; transition: background .2s ease, color .2s ease; }
+  .add:hover { background: var(--ink); color: var(--ivory); }
+  .add.added { background: var(--wine); border-color: var(--wine); color: var(--on-wine); }
+  .more-wrap { text-align: center; margin-top: 48px; }
+
+  /* Promises */
+  .promises { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center; }
+  .promise { padding: 8px 12px; }
+  .promise svg { width: 40px; height: 40px; color: var(--gold); }
+  .promise h3 { font-size: 1.2rem; margin-top: 12px; }
+  .promise p { margin: 6px auto 0; color: var(--muted); font-size: 15px; max-width: 28ch; }
+  @media (max-width: 700px) { .promises { grid-template-columns: 1fr; gap: 32px; } }
+
+  /* Custom quote */
+  .quote-wrap { background: var(--wine); color: var(--on-wine); padding: clamp(18px, 3vw, 28px); }
+  .quote { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(28px, 5vw, 64px); align-items: center; padding: clamp(32px, 5vw, 64px) clamp(20px, 5vw, 64px); max-width: 1240px; margin-inline: auto; }
+  .quote h2 { font-size: clamp(2rem, 4vw, 2.9rem); color: #FFF6E8; margin-top: 12px; }
+  .quote .script { font-size: 1.35rem; color: var(--gold-light); margin: 10px 0 0; }
+  .quote form { background: var(--card); color: var(--ink); padding: clamp(22px, 3vw, 34px); display: grid; gap: 16px; border-top: 3px solid var(--gold-light); }
+  .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .quote label { display: grid; gap: 6px; font-size: 11.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .quote select, .quote input { height: 48px; width: 100%; padding-inline: 12px; border: 1px solid var(--line); background: var(--ivory); color: var(--ink); font: 500 15px/1 var(--f-body); letter-spacing: 0; text-transform: none; border-radius: 0; }
+  .estimate { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; padding-block: 14px; border-block: 1px dashed var(--line); }
+  .estimate span { font-size: 11.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .estimate b { font: 400 1.6rem/1 var(--f-display); color: var(--wine); font-variant-numeric: tabular-nums; }
+  :root[data-theme="dark"] .estimate b { color: var(--gold-light); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .estimate b { color: var(--gold-light); } }
+  .estimate small { width: 100%; color: var(--muted); font-size: 13.5px; }
+  .estimate small.rush { color: #C0392B; }
+  .quote .btn { width: 100%; }
+  @media (max-width: 860px) { .quote { grid-template-columns: 1fr; text-align: center; } }
+  @media (max-width: 460px) { .fields { grid-template-columns: 1fr; } }
+
+  /* Footer */
+  footer { background: var(--wine-deep); color: var(--on-wine); padding-block: 56px 28px; text-align: center; }
+  footer .logo b { color: var(--gold-light); }
+  footer .links { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px 32px; margin: 28px 0 22px; }
+  footer .links a { font-size: 12px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: #D8C3B0; }
+  footer .links a:hover { color: var(--gold-light); }
+  footer .contact { color: #D8C3B0; font-size: 15px; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px 28px; }
+  footer .contact span { user-select: all; }
+  footer .base { margin-top: 32px; padding-top: 20px; border-top: 1px solid rgba(226, 192, 122, .2); font-size: 12.5px; color: #A98F86; }
+
+  /* Bag drawer */
+  .scrim { position: fixed; inset: 0; background: rgba(30, 5, 12, .5); z-index: 40; }
+  .drawer {
+    position: fixed; top: 0; right: 0; bottom: 0; z-index: 50; width: min(400px, 100%);
+    background: var(--ivory); border-left: 3px solid var(--gold);
+    padding: calc(24px + env(safe-area-inset-top, 0px)) 24px calc(24px + env(safe-area-inset-bottom, 0px));
+    display: grid; grid-template-rows: auto 1fr auto; gap: 18px;
+  }
+  .drawer header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 14px; }
+  .drawer h2 { font-size: 1.6rem; letter-spacing: .06em; }
+  .close { width: 38px; height: 38px; border: 1px solid var(--line); background: none; color: var(--ink); cursor: pointer; font-size: 15px; }
+  .bag-list { list-style: none; margin: 0; padding: 0; overflow-y: auto; display: grid; align-content: start; gap: 14px; }
+  .bag-list li { display: grid; grid-template-columns: 60px 1fr auto; gap: 14px; align-items: center; }
+  .bag-list canvas { width: 60px; height: 76px; }
+  .bag-list b { display: block; font: 400 15px/1.3 var(--f-display); }
+  .bag-list small { color: var(--gold); font-weight: 700; }
+  .bag-list button { background: none; border: 0; color: var(--muted); cursor: pointer; font: 600 11px var(--f-body); letter-spacing: .1em; text-transform: uppercase; text-decoration: underline; padding: 0; }
+  .bag-list .empty { display: block; color: var(--muted); padding-block: 16px; }
+  .total { display: flex; justify-content: space-between; margin-bottom: 14px; font: 400 1.3rem/1 var(--f-display); font-variant-numeric: tabular-nums; }
+  .drawer .btn { width: 100%; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">Bridal bookings now open · Pan-India delivery</div>
+
+<header class="header">
+  <div class="wrap">
+    <div class="row">
+      <a class="logo" href="#top"><b>SRIDEVI DESIGNER</b><small>Maggam &amp; Aari Work</small></a>
+      <button class="bag-btn" id="bag-open" type="button" aria-label="Open bag">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        <span>Bag</span><output id="bag-count">0</output>
+      </button>
+    </div>
+    <nav class="nav" aria-label="Main">
+      <a href="#top">Home</a>
+      <a href="#collection">Collection</a>
+      <a href="#custom">Custom Order</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="hero-frame">
+      <div class="inner">
+        <div>
+          <p class="kicker">Handcrafted in India</p>
+          <h1>Maggam Work for Your Special Day</h1>
+          <p class="script">Bridal blouses, sarees &amp; lehengas, embroidered by hand</p>
+          <div class="ctas">
+            <a class="btn btn-gold" href="#collection">Explore Collection</a>
+            <a class="btn btn-line" href="#custom">Book Custom Design</a>
+          </div>
+        </div>
+        <div class="arch"><canvas id="hero-canvas" aria-label="Gold lotus maggam embroidery on maroon silk"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <div class="title">
+        <p class="kicker">Shop by category</p>
+        <h2>Crafted for Every Occasion</h2>
+        <div class="ornament"><span>✦</span></div>
+      </div>
+      <div class="cats" id="cats"></div>
+    </div>
+  </section>
+
+  <section class="collection" id="collection">
+    <div class="wrap">
+      <div class="title">
+        <p class="kicker">Bestsellers</p>
+        <h2>Our Collection</h2>
+        <div class="ornament"><span>✦</span></div>
+      </div>
+      <div class="tabs" id="tabs" role="group" aria-label="Filter by category"></div>
+      <div class="products" id="products"></div>
+      <div class="more-wrap"><button class="btn btn-wine" type="button" id="more">View more designs</button></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="promises">
+        <div class="promise">
+          <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M8 32 30 10"/><circle cx="31.5" cy="8.5" r="2.2"/><path d="M8 32c-3-4 2-9 6-6s9-2 6-6-9 1-12-2"/></svg>
+          <h3>100% Handmade</h3>
+          <p>Every design is stitched by hand by skilled artisans.</p>
+        </div>
+        <div class="promise">
+          <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="5" y="14" width="30" height="12" rx="1"/><path d="M10 14v5M15 14v3M20 14v5M25 14v3M30 14v5"/></svg>
+          <h3>Perfect Fit</h3>
+          <p>Made to your measurements, with alterations included.</p>
+        </div>
+        <div class="promise">
+          <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="20" cy="20" r="14"/><path d="M20 11v9l6 4"/></svg>
+          <h3>On-Time Delivery</h3>
+          <p>Ready in 7–21 days, well before your function.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="quote-wrap" id="custom">
+    <div class="hero-frame">
+      <div class="quote">
+        <div>
+          <p class="kicker">Custom order</p>
+          <h2>Design Your Dream Outfit</h2>
+          <p class="script">Choose your work and get an instant price estimate</p>
+        </div>
+        <form id="quote-form" novalidate>
+          <div class="fields">
+            <label for="garment">Outfit
+              <select id="garment">
+                <option value="blouse">Blouse</option>
+                <option value="saree">Saree</option>
+                <option value="lehenga">Lehenga</option>
+                <option value="kurti">Kurti</option>
+                <option value="dupatta">Dupatta</option>
+              </select>
+            </label>
+            <label for="technique">Work
+              <select id="technique">
+                <option value="maggam" selected>Maggam</option>
+                <option value="aari">Aari</option>
+                <option value="zardosi">Zardosi</option>
+                <option value="stone">Stone &amp; bead</option>
+                <option value="thread">Thread work</option>
+              </select>
+            </label>
+            <label for="coverage">Design
+              <select id="coverage">
+                <option value="light">Simple</option>
+                <option value="medium" selected>Medium</option>
+                <option value="heavy">Heavy bridal</option>
+              </select>
+            </label>
+            <label for="needby">Function date
+              <input type="date" id="needby">
+            </label>
+          </div>
+          <div class="estimate" aria-live="polite">
+            <span>Estimated price</span>
+            <b id="est-price">₹0</b>
+            <small id="est-days"></small>
+          </div>
+          <a class="btn btn-wine" id="quote-wa" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.4 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.6-.1 1.2Z"/></svg>
+            Get Quote on WhatsApp
+          </a>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <a class="logo" href="#top"><b>SRIDEVI DESIGNER</b><small>Maggam &amp; Aari Work</small></a>
+    <nav class="links" aria-label="Footer">
+      <a href="#collection">Collection</a>
+      <a href="#custom">Custom Order</a>
+      <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+    </nav>
+    <div class="contact">
+      <span>+91 00000 00000</span>
+      <span>Mon – Sat · 10 am – 8 pm</span>
+    </div>
+    <div class="base">© <span id="year"></span> Sridevi Designer · Handcrafted with love</div>
+  </div>
+</footer>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="bag-title" hidden>
+  <header>
+    <h2 id="bag-title">Your Bag</h2>
+    <button class="close" type="button" id="bag-close" aria-label="Close bag">✕</button>
+  </header>
+  <ul class="bag-list" id="bag-list"></ul>
+  <div>
+    <div class="total"><span>Total</span><span id="bag-total">₹0</span></div>
+    <a class="btn btn-wine" id="bag-enquire" href="#" target="_blank" rel="noopener">Order on WhatsApp</a>
+  </div>
+</aside>
+
+<script>
+(() => {
+  /* WhatsApp number of the shop: country code + digits, e.g. "919876543210". */
+  const SHOP_WHATSAPP = "";
+  const SHOP_NAME = "Sridevi Designer";
+
+  const TAU = Math.PI * 2;
+  const inr = n => "₹" + Math.round(n).toLocaleString("en-IN");
+  const waLink = text => `https://wa.me/${SHOP_WHATSAPP}?text=${encodeURIComponent(text)}`;
+  const $ = id => document.getElementById(id);
+
+  /* ---------- Embroidery renderer: product images are drawn as stitches ---------- */
+  const THREADS = {
+    gold: ["#C9922E", "#F6DC96"], silver: ["#A9ADB5", "#F2F4F7"], rani: ["#D23A70", "#F8A8C4"],
+    peacock: ["#1F8C84", "#98E0D8"], ivory: ["#E9DEC9", "#FFFFFF"], maroon: ["#7A1733", "#C9587A"],
+  };
+  const circle = (cx, cy, r, n = 96) => Array.from({ length: n + 1 }, (_, i) => [cx + r * Math.cos(i / n * TAU), cy + r * Math.sin(i / n * TAU)]);
+  const petal = (cx, cy, ang, r0, r1, w, n = 28) => {
+    const L = [], R = [], ca = Math.cos(ang), sa = Math.sin(ang);
+    for (let i = 0; i <= n; i++) {
+      const t = i / n, a = r0 + (r1 - r0) * t, o = w * Math.pow(Math.sin(Math.PI * t), .85) * (1 - .35 * t);
+      L.push([cx + a * ca - o * sa, cy + a * sa + o * ca]); R.push([cx + a * ca + o * sa, cy + a * sa - o * ca]);
+    }
+    return L.concat(R.reverse());
+  };
+  const rose = (cx, cy, R, k, rot = 0, n = 360) => {
+    const span = k % 2 ? Math.PI : TAU;
+    return Array.from({ length: n + 1 }, (_, i) => { const th = i / n * span, r = R * Math.cos(k * th); return [cx + r * Math.cos(th + rot), cy + r * Math.sin(th + rot)]; });
+  };
+  const wave = (x0, x1, y, amp, period, n = 160) => Array.from({ length: n + 1 }, (_, i) => { const x = x0 + (x1 - x0) * i / n; return [x, y + amp * Math.sin((x - x0) / period * TAU)]; });
+  const line = (x0, y0, x1, y1) => [[x0, y0], [x1, y1]];
+
+  function stitchify(paths, len, gap) {
+    const out = [];
+    for (const { pts, thread, w } of paths) {
+      let carry = 0, on = true, start = pts[0];
+      for (let i = 1; i < pts.length; i++) {
+        let [ax, ay] = pts[i - 1]; const [bx, by] = pts[i];
+        let seg = Math.hypot(bx - ax, by - ay);
+        while (seg > 0) {
+          const need = (on ? len : gap) - carry;
+          if (seg >= need) {
+            const t = need / seg, nx = ax + (bx - ax) * t, ny = ay + (by - ay) * t;
+            if (on) out.push([start[0], start[1], nx, ny, thread, w]); else start = [nx, ny];
+            on = !on; carry = 0; seg -= need; ax = nx; ay = ny;
+          } else { carry += seg; seg = 0; }
+        }
+      }
+    }
+    return out;
+  }
+  function drawStitch(ctx, [x1, y1, x2, y2, thread, w]) {
+    const [base, hi] = THREADS[thread];
+    ctx.lineCap = "round";
+    ctx.strokeStyle = "rgba(0,0,0,.28)"; ctx.lineWidth = w;
+    ctx.beginPath(); ctx.moveTo(x1 + .6, y1 + .9); ctx.lineTo(x2 + .6, y2 + .9); ctx.stroke();
+    ctx.strokeStyle = base; ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    ctx.strokeStyle = hi; ctx.lineWidth = Math.max(.6, w * .32); ctx.globalAlpha = .85;
+    ctx.beginPath(); ctx.moveTo(x1 - w * .15, y1 - w * .15); ctx.lineTo(x2 - w * .15, y2 - w * .15); ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+  function drawBead(ctx, x, y, r, thread) {
+    const [base, hi] = THREADS[thread], g = ctx.createRadialGradient(x - r * .35, y - r * .35, r * .1, x, y, r);
+    g.addColorStop(0, hi); g.addColorStop(1, base);
+    ctx.fillStyle = "rgba(0,0,0,.3)"; ctx.beginPath(); ctx.arc(x + .7, y + 1, r, 0, TAU); ctx.fill();
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill();
+  }
+  function drawMirror(ctx, x, y, r) {
+    const g = ctx.createLinearGradient(x - r, y - r, x + r, y + r);
+    g.addColorStop(0, "#F5F7FA"); g.addColorStop(.45, "#9AA3AE"); g.addColorStop(.55, "#DDE2E8"); g.addColorStop(1, "#7D8691");
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill();
+  }
+  function fabric(ctx, w, h, color) {
+    ctx.fillStyle = color; ctx.fillRect(0, 0, w, h);
+    ctx.globalAlpha = .05; ctx.strokeStyle = "#000"; ctx.lineWidth = 1;
+    for (let x = 0; x < w; x += 3) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
+    ctx.globalAlpha = 1;
+  }
+  function setup(canvas) {
+    const w = canvas.clientWidth || 300, h = canvas.clientHeight || 400, dpr = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+    const ctx = canvas.getContext("2d"); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return [ctx, w, h];
+  }
+
+  const MOTIFS = {
+    lotus(w, h, t, s = 1) {
+      const cx = w / 2, cy = h * .52, R = Math.min(w, h) * .3, P = [], beads = [];
+      for (let i = 0; i < 8; i++) P.push({ pts: petal(cx, cy, i / 8 * TAU, R * .3, R, R * .2), thread: t[0], w: 2.2 * s });
+      for (let i = 0; i < 8; i++) P.push({ pts: petal(cx, cy, (i + .5) / 8 * TAU, R * .3, R * .72, R * .14), thread: t[1], w: 2 * s });
+      P.push({ pts: circle(cx, cy, R * .24), thread: t[0], w: 2.4 * s });
+      P.push({ pts: circle(cx, cy, R * 1.22, 200), thread: t[0], w: 1.6 * s });
+      for (let i = 0; i < 16; i++) { const a = i / 16 * TAU; beads.push([cx + R * 1.1 * Math.cos(a), cy + R * 1.1 * Math.sin(a), 2.6 * s, t[0]]); }
+      for (let i = 0; i < 32; i++) P.push({ pts: petal(cx, cy, i / 32 * TAU, R * 1.26, R * 1.42, R * .04), thread: i % 2 ? t[1] : t[0], w: 1.6 * s });
+      beads.push([cx, cy, 5 * s, t[1]]);
+      return { paths: P, beads };
+    },
+    vine(w, h, t) {
+      const P = [], beads = [];
+      for (let r = 0; r < 3; r++) {
+        const y = h * (.26 + r * .26);
+        P.push({ pts: wave(-10, w + 10, y, 14, w * .5), thread: t[0], w: 2.4 });
+        for (let i = 0; i < 6; i++) {
+          const x = (i + .5) / 6 * w, yy = y + 14 * Math.sin(x / (w * .5) * TAU), up = i % 2 ? -1 : 1;
+          P.push({ pts: petal(x, yy, up * Math.PI / 2 + .5, 4, 28, 9), thread: t[1], w: 1.8 });
+          beads.push([x + 10, yy - up * 18, 2.4, t[0]]);
+        }
+      }
+      return { paths: P, beads };
+    },
+    rose(w, h, t) {
+      const cx = w / 2, cy = h * .52, R = Math.min(w, h) * .33, P = [], beads = [];
+      P.push({ pts: rose(cx, cy, R, 5), thread: t[0], w: 1.6 });
+      P.push({ pts: rose(cx, cy, R * .55, 5, Math.PI / 5), thread: t[1], w: 1.6 });
+      P.push({ pts: circle(cx, cy, R * 1.12, 140), thread: t[1], w: 1.4 });
+      for (let i = 0; i < 24; i++) { const a = i / 24 * TAU; beads.push([cx + R * 1.24 * Math.cos(a), cy + R * 1.24 * Math.sin(a), 1.6, t[0]]); }
+      return { paths: P, beads };
+    },
+    mirrors(w, h, t) {
+      const P = [], mirrors = [];
+      for (let r = 0; r < 4; r++) for (let c = 0; c < 3; c++) {
+        const x = (c + .5 + (r % 2 ? .5 : 0)) / 3 * w, y = (r + .5) / 4 * h, m = 11;
+        mirrors.push([x, y, m]);
+        P.push({ pts: circle(x, y, m + 2, 40), thread: t[0], w: 2.4 });
+        for (let k = 0; k < 16; k++) { const a = k / 16 * TAU; P.push({ pts: line(x + (m + 3) * Math.cos(a), y + (m + 3) * Math.sin(a), x + (m + 11) * Math.cos(a), y + (m + 11) * Math.sin(a)), thread: t[1], w: 1.6 }); }
+      }
+      return { paths: P, beads: [], mirrors };
+    },
+    jaal(w, h, t) {
+      const P = [], beads = [], s = w / 4;
+      for (let k = -6; k <= 10; k++) { P.push({ pts: line(k * s, 0, k * s + h, h), thread: t[0], w: 1.8 }); P.push({ pts: line(k * s, 0, k * s - h, h), thread: t[0], w: 1.8 }); }
+      for (let y = 0, row = 0; y <= h + s; y += s / 2, row++) for (let x = 0; x <= w + s; x += s) beads.push([x + (row % 2 ? s / 2 : 0), y, 3.2, t[1]]);
+      for (let y = s / 4, row = 0; y <= h; y += s / 2, row++) for (let x = 0; x <= w; x += s) P.push({ pts: rose(x + (row % 2 ? 0 : s / 2), y, s * .16, 2), thread: t[1], w: 1.4 });
+      return { paths: P, beads };
+    },
+    temple(w, h, t) {
+      const P = [], beads = [], n = 5, tw = w / n;
+      for (const [y0, dir] of [[h * .14, 1], [h * .88, -1]]) {
+        const pts = [];
+        for (let i = 0; i <= n; i++) { pts.push([i * tw, y0]); if (i < n) pts.push([i * tw + tw / 2, y0 + dir * tw * .8]); }
+        P.push({ pts, thread: t[0], w: 2.6 });
+        P.push({ pts: line(0, y0 - dir * 8, w, y0 - dir * 8), thread: t[1], w: 2 });
+        for (let i = 0; i < n; i++) beads.push([i * tw + tw / 2, y0 + dir * tw * .42, 3.2, t[1]]);
+      }
+      for (let i = 0; i < 6; i++) P.push({ pts: petal(w / 2, h / 2, i / 6 * TAU - Math.PI / 2, 8, 44, 13), thread: t[0], w: 2 });
+      beads.push([w / 2, h / 2, 5, t[1]]);
+      return { paths: P, beads };
+    },
+    // Blouse back-neck: layered U-shaped neckline with petals and beads along it
+    neck(w, h, t) {
+      const P = [], beads = [], cx = w / 2, top = h * .06, hw = w * .3, depth = h * .5;
+      const u = (extra, n = 80) => Array.from({ length: n + 1 }, (_, i) => {
+        const th = -Math.PI / 2 + i / n * Math.PI;
+        return [cx + (hw + extra) * Math.sin(th), top + (depth + extra) * Math.cos(th)];
+      });
+      P.push({ pts: u(0), thread: t[0], w: 2.6 });
+      P.push({ pts: u(9), thread: t[1], w: 2 });
+      P.push({ pts: u(18), thread: t[0], w: 2.2 });
+      for (let i = 1; i < 12; i++) {
+        const th = -Math.PI / 2 + i / 12 * Math.PI;
+        const x = cx + (hw + 24) * Math.sin(th), y = top + (depth + 24) * Math.cos(th);
+        const ang = Math.atan2((y - top) / (depth + 24), (x - cx) / (hw + 24));
+        P.push({ pts: petal(x, y, ang, 2, 20, 6), thread: i % 2 ? t[1] : t[0], w: 1.7 });
+        beads.push([cx + (hw + 4.5) * Math.sin(th), top + (depth + 4.5) * Math.cos(th), 2.6, t[1]]);
+      }
+      beads.push([cx, top + depth + 52, 5, t[1]]);
+      for (let i = 0; i < 3; i++) P.push({ pts: wave(w * .06, w * .94, h * (.86 + i * .035), 3, 24), thread: t[i % 2], w: 1.7 });
+      return { paths: P, beads };
+    },
+    // Scattered small flowers (buti) in an offset grid
+    buti(w, h, t) {
+      const P = [], beads = [], s = w / 3.2;
+      for (let y = s * .6, row = 0; y < h; y += s * .8, row++) for (let x = (row % 2 ? s : s / 2); x < w; x += s) {
+        for (let k = 0; k < 5; k++) P.push({ pts: petal(x, y, k / 5 * TAU - Math.PI / 2, 2, 13, 5, 16), thread: t[0], w: 1.6 });
+        beads.push([x, y, 2.6, t[1]]);
+        beads.push([x + s / 2, y + s * .4, 1.6, t[0]]);
+      }
+      return { paths: P, beads };
+    },
+    // Saree: sparse buti on the body, heavy border along the bottom
+    border(w, h, t) {
+      const P = [], beads = [], s = w / 3, b = h * .64;
+      for (let y = s * .55, row = 0; y < b - 30; y += s * .75, row++) for (let x = (row % 2 ? s : s / 2); x < w; x += s) {
+        for (let k = 0; k < 4; k++) P.push({ pts: petal(x, y, k / 4 * TAU, 2, 10, 4, 14), thread: t[0], w: 1.5 });
+        beads.push([x, y, 2, t[1]]);
+      }
+      P.push({ pts: line(0, b, w, b), thread: t[0], w: 2.4 });
+      P.push({ pts: line(0, b + 7, w, b + 7), thread: t[1], w: 1.6 });
+      const n = 6, tw = w / n, tri = [];
+      for (let i = 0; i <= n; i++) { tri.push([i * tw, b + 14]); if (i < n) tri.push([i * tw + tw / 2, b + 14 + tw * .7]); }
+      P.push({ pts: tri, thread: t[0], w: 2.4 });
+      for (let i = 0; i < n; i++) beads.push([i * tw + tw / 2, b + 14 + tw * .32, 2.8, t[1]]);
+      P.push({ pts: wave(-6, w + 6, b + 30 + tw * .7, 6, w / 3), thread: t[1], w: 2 });
+      P.push({ pts: line(0, h - 14, w, h - 14), thread: t[0], w: 2.4 });
+      return { paths: P, beads };
+    },
+    // Mango buta (paisley) in alternating rows
+    paisley(w, h, t) {
+      const P = [], beads = [];
+      const shape = (cx, cy, s, rot, flip, n = 90) => Array.from({ length: n + 1 }, (_, i) => {
+        const tt = i / n * TAU;
+        let x = Math.cos(tt), y = Math.sin(tt) * Math.pow(Math.sin(tt / 2), 1.6);
+        y += .9 * Math.pow((x + 1) / 2, 3) * flip;
+        const xr = x * Math.cos(rot) - y * Math.sin(rot), yr = x * Math.sin(rot) + y * Math.cos(rot);
+        return [cx + xr * s, cy + yr * s];
+      });
+      const s = w * .19;
+      for (let r = 0; r < 3; r++) for (let c = 0; c < 2; c++) {
+        const cx = w * (c ? .7 : .3), cy = h * (.2 + r * .3), flip = (r + c) % 2 ? 1 : -1, rot = -Math.PI / 2.4;
+        P.push({ pts: shape(cx, cy, s, rot, flip), thread: t[0], w: 2.2 });
+        P.push({ pts: shape(cx - s * .12, cy + s * .16, s * .62, rot, flip), thread: t[1], w: 1.7 });
+        beads.push([cx - s * .2, cy + s * .3, 3.2, t[1]]);
+        for (let k = 0; k < 5; k++) { const a = k / 5 * TAU; beads.push([cx - s * .2 + 9 * Math.cos(a), cy + s * .3 + 9 * Math.sin(a), 1.6, t[0]]); }
+      }
+      return { paths: P, beads };
+    },
+  };
+
+  function paint(canvas, d, scale = 1) {
+    const [ctx, w, h] = setup(canvas);
+    fabric(ctx, w, h, d.fabric);
+    const m = MOTIFS[d.motif](w, h, d.threads, scale);
+    stitchify(m.paths, 4.5 * scale, 1.2 * scale).forEach(s => drawStitch(ctx, s));
+    (m.mirrors || []).forEach(([x, y, r]) => drawMirror(ctx, x, y, r));
+    m.beads.forEach(([x, y, r, th]) => drawBead(ctx, x, y, r, th));
+    const g = ctx.createRadialGradient(w / 2, h / 2, Math.min(w, h) * .3, w / 2, h / 2, Math.max(w, h) * .75);
+    g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(1, "rgba(0,0,0,.25)");
+    ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+  }
+
+  /* ---------- Products (edit names, prices and colours here) ---------- */
+  // Each row: [name, work, price, pattern, fabric colour, thread 1, thread 2]
+  // Patterns: lotus, neck, temple, buti, paisley, border, vine, jaal, mirrors, rose
+  // Threads: gold, silver, rani, peacock, ivory, maroon
+  const CATALOGUE = {
+    Blouses: [
+      ["Lotus Maggam Blouse",      "Maggam",  6500,  "lotus",   "#5A0F2A", "gold",   "rani"],
+      ["Peacock Back-Neck Blouse", "Maggam",  7200,  "neck",    "#0F3B3A", "gold",   "peacock"],
+      ["Temple Border Blouse",     "Aari",    3900,  "temple",  "#1E2A5A", "gold",   "rani"],
+      ["Emerald Bridal Blouse",    "Maggam",  12500, "lotus",   "#0E4D3A", "gold",   "silver"],
+      ["Ruby Back-Neck Blouse",    "Maggam",  8900,  "neck",    "#7A0F2E", "gold",   "silver"],
+      ["Gold Buti Blouse",         "Aari",    2800,  "buti",    "#2B1A4A", "gold",   "gold"],
+      ["Mango Buta Blouse",        "Aari",    4200,  "paisley", "#6B1F0E", "gold",   "rani"],
+      ["Mirror Work Blouse",       "Mirror",  3600,  "mirrors", "#0D5C63", "gold",   "rani"],
+      ["Pastel Pink Aari Blouse",  "Aari",    3400,  "neck",    "#E8B4C4", "maroon", "gold"],
+      ["Royal Blue Bridal Blouse", "Zardosi", 11800, "lotus",   "#15245C", "gold",   "silver"],
+      ["Mustard Thread Blouse",    "Thread",  2600,  "buti",    "#C8902B", "maroon", "peacock"],
+      ["Wine Paisley Blouse",      "Maggam",  5600,  "paisley", "#4A0B1D", "gold",   "silver"],
+      ["Lavender Pearl Blouse",    "Stone",   6800,  "neck",    "#8E7AB5", "silver", "ivory"],
+    ],
+    Sarees: [
+      ["Peacock Vine Saree",       "Zardosi", 14000, "vine",    "#0F3B3A", "gold",   "peacock"],
+      ["Kanchi Pattu Border",      "Maggam",  8500,  "border",  "#7A2E0E", "gold",   "maroon"],
+      ["Crimson Buti Saree",       "Aari",    6200,  "buti",    "#8B0F2B", "gold",   "gold"],
+      ["Emerald Temple Saree",     "Zardosi", 16500, "border",  "#0E4D3A", "gold",   "rani"],
+      ["Ivory Pearl Saree",        "Stone",   9800,  "buti",    "#EFE3CC", "gold",   "silver"],
+      ["Mango Buta Saree",         "Maggam",  11200, "paisley", "#5A0F2A", "gold",   "rani"],
+      ["Navy Jaal Saree",          "Zardosi", 18900, "jaal",    "#1A2350", "gold",   "silver"],
+      ["Rani Pink Border Saree",   "Aari",    7400,  "border",  "#B0164E", "gold",   "peacock"],
+      ["Mint Vine Saree",          "Thread",  5200,  "vine",    "#9CC7B5", "ivory",  "maroon"],
+      ["Purple Paisley Saree",     "Maggam",  10400, "paisley", "#3E1A5C", "gold",   "silver"],
+      ["Mustard Silk Saree",       "Aari",    6900,  "buti",    "#C8902B", "maroon", "maroon"],
+      ["Black & Gold Saree",       "Zardosi", 15800, "border",  "#1A1215", "gold",   "rani"],
+    ],
+    Lehengas: [
+      ["Royal Jaal Lehenga",       "Zardosi", 24000, "jaal",    "#6B0D1E", "gold",   "silver"],
+      ["Mirror Work Lehenga",      "Mirror",  9800,  "mirrors", "#C2185B", "gold",   "peacock"],
+      ["Bridal Lotus Lehenga",     "Maggam",  32000, "lotus",   "#7A0F2E", "gold",   "rani"],
+      ["Emerald Jaal Lehenga",     "Zardosi", 28500, "jaal",    "#0E4D3A", "gold",   "rani"],
+      ["Navratri Mirror Lehenga",  "Mirror",  8600,  "mirrors", "#D97A16", "maroon", "gold"],
+      ["Peach Buti Lehenga",       "Aari",    14500, "buti",    "#E9A48A", "gold",   "maroon"],
+      ["Midnight Paisley Lehenga", "Maggam",  21000, "paisley", "#16193A", "gold",   "silver"],
+      ["Rose Vine Lehenga",        "Thread",  12800, "vine",    "#D98AA0", "ivory",  "maroon"],
+      ["Teal Bridal Lehenga",      "Zardosi", 26500, "lotus",   "#0F4F57", "gold",   "silver"],
+      ["Wine Border Lehenga",      "Maggam",  19500, "border",  "#4A0B1D", "gold",   "rani"],
+      ["Lilac Mirror Lehenga",     "Mirror",  11200, "mirrors", "#8E7AB5", "silver", "rani"],
+      ["Red Mango Lehenga",        "Zardosi", 29800, "paisley", "#9B0F1E", "gold",   "gold"],
+    ],
+    Kurtis: [
+      ["Ivory Rose Kurti",         "Thread",  3200,  "rose",    "#B9CFC8", "ivory",  "ivory"],
+      ["Blush Vine Anarkali",      "Thread",  5400,  "vine",    "#E9C3CF", "ivory",  "rani"],
+      ["Yellow Buti Kurti",        "Aari",    2400,  "buti",    "#E7C04A", "maroon", "peacock"],
+      ["Navy Yoke Kurti",          "Aari",    2900,  "neck",    "#1E2A5A", "gold",   "ivory"],
+      ["Mint Chikan Kurti",        "Thread",  2700,  "rose",    "#A8D5C2", "ivory",  "ivory"],
+      ["Maroon Paisley Anarkali",  "Maggam",  6800,  "paisley", "#5A0F2A", "gold",   "rani"],
+      ["Peach Rose Kurti",         "Thread",  2500,  "rose",    "#F0B9A0", "ivory",  "maroon"],
+      ["Teal Mirror Kurti",        "Mirror",  3100,  "mirrors", "#0D5C63", "gold",   "rani"],
+      ["White Chikan Anarkali",    "Thread",  4800,  "vine",    "#F3EEE6", "silver", "peacock"],
+      ["Black & Gold Kurti",       "Aari",    3600,  "neck",    "#1A1215", "gold",   "rani"],
+      ["Lavender Buti Kurti",      "Thread",  2300,  "buti",    "#B8A6D9", "ivory",  "rani"],
+      ["Green Festive Anarkali",   "Maggam",  7400,  "lotus",   "#2F6B3A", "gold",   "rani"],
+    ],
+  };
+  const slug = s => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const PRODUCTS = Object.entries(CATALOGUE).flatMap(([cat, rows]) => rows.map(([name, tech, price, motif, fabric, t1, t2]) =>
+    ({ id: slug(name), name, cat, tech, price, motif, fabric, threads: [t1, t2] })));
+  // "All" view mixes categories so the first rows show a bit of everything
+  const MIXED = [];
+  for (let i = 0; i < 13; i++) Object.keys(CATALOGUE).forEach(cat => { const p = PRODUCTS.filter(x => x.cat === cat)[i]; if (p) MIXED.push(p); });
+  const PAGE = 12;
+  const CATS = [
+    { name: "Blouses",  motif: "lotus",   fabric: "#5A0F2A", threads: ["gold", "rani"] },
+    { name: "Sarees",   motif: "vine",    fabric: "#0F3B3A", threads: ["gold", "peacock"] },
+    { name: "Lehengas", motif: "jaal",    fabric: "#6B0D1E", threads: ["gold", "silver"] },
+    { name: "Kurtis",   motif: "rose",    fabric: "#8FAFA6", threads: ["ivory", "ivory"] },
+  ];
+
+  let bag = [];
+  try { bag = JSON.parse(localStorage.getItem("sridevi-bag") || "[]").filter(id => PRODUCTS.some(p => p.id === id)); } catch (e) {}
+  const save = () => { try { localStorage.setItem("sridevi-bag", JSON.stringify(bag)); } catch (e) {} };
+
+  /* Categories */
+  const cats = $("cats");
+  CATS.forEach(c => {
+    const count = PRODUCTS.filter(p => p.cat === c.name).length;
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "cat";
+    b.innerHTML = `<div class="arch"><canvas aria-hidden="true"></canvas></div><h3>${c.name}</h3><small>${count} design${count === 1 ? "" : "s"}</small>`;
+    b.onclick = () => { setFilter(c.name); $("collection").scrollIntoView({ behavior: "smooth" }); };
+    cats.appendChild(b);
+  });
+  const paintCats = () => cats.querySelectorAll("canvas").forEach((cv, i) => paint(cv, CATS[i]));
+
+  /* Collection */
+  const products = $("products"), tabs = $("tabs");
+  let filter = "All";
+  ["All", ...CATS.map(c => c.name)].forEach(g => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "tab"; b.textContent = g; b.dataset.cat = g;
+    b.onclick = () => setFilter(g);
+    tabs.appendChild(b);
+  });
+  let shown = PAGE;
+  function setFilter(g) {
+    filter = g;
+    shown = g === "All" ? PAGE : Infinity;
+    tabs.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-pressed", t.dataset.cat === g));
+    renderProducts();
+  }
+
+  // Paint product images only as they come near the screen
+  const canvasData = new WeakMap();
+  const lazy = "IntersectionObserver" in window ? new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting) { paint(e.target, canvasData.get(e.target)); lazy.unobserve(e.target); }
+  }), { rootMargin: "400px 0px" }) : null;
+
+  function renderProducts() {
+    products.innerHTML = "";
+    const list = filter === "All" ? MIXED : PRODUCTS.filter(p => p.cat === filter);
+    list.slice(0, shown).forEach(p => {
+      const el = document.createElement("article");
+      el.className = "product";
+      el.innerHTML = `
+        <div class="pimg"><span class="ptag">${p.tech}</span><canvas aria-label="${p.name}"></canvas></div>
+        <h3>${p.name}</h3>
+        <div class="price">${inr(p.price)}</div>
+        <button class="add" type="button" data-id="${p.id}"></button>`;
+      products.appendChild(el);
+      const cv = el.querySelector("canvas");
+      canvasData.set(cv, p);
+      if (lazy) lazy.observe(cv); else requestAnimationFrame(() => paint(cv, p));
+    });
+    const left = list.length - Math.min(shown, list.length);
+    $("more").hidden = left <= 0;
+    $("more").textContent = `View more designs (${left})`;
+    syncAdd();
+  }
+  $("more").onclick = () => { shown += PAGE; renderProducts(); };
+  function syncAdd() {
+    products.querySelectorAll(".add").forEach(b => {
+      const inBag = bag.includes(b.dataset.id);
+      b.classList.toggle("added", inBag);
+      b.textContent = inBag ? "Added ✓" : "Add to Bag";
+    });
+  }
+
+  /* Bag */
+  const drawer = $("drawer"), scrim = $("scrim");
+  function renderBag() {
+    $("bag-count").textContent = bag.length;
+    const list = $("bag-list"), items = bag.map(id => PRODUCTS.find(p => p.id === id));
+    list.innerHTML = items.length ? "" : `<li class="empty">Your bag is empty.</li>`;
+    items.forEach(p => {
+      const li = document.createElement("li");
+      li.innerHTML = `<canvas></canvas><div><b>${p.name}</b><small>${inr(p.price)}</small></div><button type="button" data-remove="${p.id}">Remove</button>`;
+      list.appendChild(li);
+      requestAnimationFrame(() => paint(li.querySelector("canvas"), p, .5));
+    });
+    const total = items.reduce((s, p) => s + p.price, 0);
+    $("bag-total").textContent = inr(total);
+    const link = $("bag-enquire");
+    link.hidden = !items.length;
+    link.href = waLink(`Hi ${SHOP_NAME}, I'd like to order:\n` + items.map(p => `• ${p.name} — ${inr(p.price)}`).join("\n") + `\nTotal: ${inr(total)}`);
+    syncAdd();
+  }
+  products.addEventListener("click", e => {
+    const b = e.target.closest(".add"); if (!b) return;
+    const id = b.dataset.id;
+    bag = bag.includes(id) ? bag.filter(x => x !== id) : [...bag, id];
+    save(); renderBag();
+  });
+  $("bag-list").addEventListener("click", e => {
+    const id = e.target.dataset.remove; if (!id) return;
+    bag = bag.filter(x => x !== id); save(); renderBag();
+  });
+  const openBag = () => { renderBag(); drawer.hidden = scrim.hidden = false; $("bag-close").focus(); };
+  const closeBag = () => { drawer.hidden = scrim.hidden = true; $("bag-open").focus(); };
+  $("bag-open").onclick = openBag;
+  $("bag-close").onclick = closeBag;
+  scrim.onclick = closeBag;
+  addEventListener("keydown", e => { if (e.key === "Escape" && !drawer.hidden) closeBag(); });
+
+  /* ---------- Quote (edit your rates here) ---------- */
+  const BASE = { blouse: [1800, 7, "Blouse"], saree: [4500, 14, "Saree"], lehenga: [9000, 20, "Lehenga"], kurti: [1600, 8, "Kurti"], dupatta: [2200, 9, "Dupatta"] };
+  const WORK = { maggam: [1.35, 1.2], aari: [1, 1], zardosi: [1.8, 1.4], stone: [1.5, 1.2], thread: [.85, .9] };
+  const SIZE = { light: [1, 1], medium: [1.8, 1.4], heavy: [3, 2] };
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const iso = d => new Date(d - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
+  $("needby").min = iso(today);
+  $("needby").value = iso(new Date(+today + 30 * 864e5));
+
+  function updateQuote() {
+    const g = BASE[$("garment").value], w = WORK[$("technique").value], s = SIZE[$("coverage").value];
+    const est = g[0] * w[0] * s[0], low = Math.round(est * .9 / 100) * 100, high = Math.round(est * 1.15 / 100) * 100;
+    const days = Math.round(g[1] * w[1] * s[1]);
+    $("est-price").textContent = `${inr(low)} – ${inr(high)}`;
+    const left = $("needby").value ? Math.round((new Date($("needby").value + "T00:00") - today) / 864e5) : null;
+    const rush = left !== null && left < days;
+    $("est-days").textContent = rush ? `Needs about ${days} days. Message us to check if a rush order is possible.` : `Ready in about ${days} days`;
+    $("est-days").classList.toggle("rush", rush);
+    const date = $("needby").value ? new Date($("needby").value + "T00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "flexible";
+    $("quote-wa").href = waLink(`Hi ${SHOP_NAME}, I'd like a quote:\n${g[2]} · ${$("technique").selectedOptions[0].text} · ${$("coverage").selectedOptions[0].text} design\nFunction date: ${date}\nEstimate: ${inr(low)} – ${inr(high)}`);
+  }
+  ["garment", "technique", "coverage", "needby"].forEach(id => $(id).addEventListener("input", updateQuote));
+
+  /* ---------- Boot ---------- */
+  const hero = { motif: "lotus", fabric: "#4A0B1D", threads: ["gold", "rani"] };
+  const paintHero = () => paint($("hero-canvas"), hero, 1.5);
+  $("year").textContent = new Date().getFullYear();
+  setFilter("All"); renderBag(); updateQuote();
+  requestAnimationFrame(() => { paintHero(); paintCats(); });
+  let lastW = innerWidth, t;
+  addEventListener("resize", () => {
+    if (innerWidth === lastW) return; lastW = innerWidth; clearTimeout(t);
+    t = setTimeout(() => { paintHero(); paintCats(); renderProducts(); }, 150);
+  });
+})();
+</script>
+</body>
+</html>
